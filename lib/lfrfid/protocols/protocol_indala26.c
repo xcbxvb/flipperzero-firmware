@@ -286,17 +286,16 @@ void protocol_indala26_render_data_internal(
     }
     if(odd_parity_sum % 2 != odd_parity) wiegand_correct = false;
 
-    furi_string_set(result, "ID: ");
-
-    for(size_t i = 0; i < INDALA26_DECODED_DATA_SIZE; ++i) {
-        furi_string_cat_printf(result, "%02X ", protocol->data[i]);
-    }
-
-    furi_string_cat_printf(
+    furi_string_printf(
         result,
-        "\nFC: %u"
-        "\nCard: %u"
-        "\nParity: %s",
+        "ID: %02X %02X %02X %02X\n"
+        "FC: %u\n"
+        "Card: %u\n"
+        "Parity: %s",
+        protocol->data[0],
+        protocol->data[1],
+        protocol->data[2],
+        protocol->data[3],
         fc,
         card,
         (wiegand_correct ? "+" : "-"));

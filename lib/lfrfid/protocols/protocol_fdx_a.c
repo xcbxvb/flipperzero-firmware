@@ -213,7 +213,6 @@ void protocol_fdx_a_render_data(ProtocolFDXA* protocol, FuriString* result) {
     for(size_t i = 0; i < FDXA_DECODED_DATA_SIZE; i++) {
         parity_sum += bit_lib_test_parity_32(data[i], BitLibParityOdd);
         data[i] &= 0x7F;
-
     }
 
     furi_string_printf(
