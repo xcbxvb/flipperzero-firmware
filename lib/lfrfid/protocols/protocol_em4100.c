@@ -327,13 +327,18 @@ bool protocol_em4100_write_data(ProtocolEM4100* protocol, void* data) {
 };
 
 void protocol_em4100_render_data(ProtocolEM4100* protocol, FuriString* result) {
-    uint8_t* data = protocol->data;
-    furi_string_printf(
+    furi_string_set(result, "ID: ");
+
+    const uint8_t* data = protocol->data;
+    for(size_t i = 0; i < EM4100_DECODED_DATA_SIZE; ++i) {
+        furi_string_cat_printf(result, "%02X", data[i]);
+    }
+
+    furi_string_cat_printf(
         result,
-        "FC: %03u, Card: %05u (RF/%u)",
+        "\nFC: %03u\nCard: %05u",
         data[2],
-        (uint16_t)((data[3] << 8) | (data[4])),
-        protocol->clock_per_bit);
+        (uint16_t)((data[3] << 8) | (data[4])));
 };
 
 const ProtocolBase protocol_em4100 = {
