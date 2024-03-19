@@ -336,7 +336,8 @@ void protocol_em4100_render_data(ProtocolEM4100* protocol, FuriString* result) {
 
     furi_string_cat_printf(
         result,
-        "\nFC: %03u\nCard: %05u",
+        "\nFC: %03u"
+        "\nCard: %05u",
         data[2],
         (uint16_t)((data[3] << 8) | (data[4])));
 };

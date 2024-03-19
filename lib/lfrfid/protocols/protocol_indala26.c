@@ -286,30 +286,30 @@ void protocol_indala26_render_data_internal(
     }
     if(odd_parity_sum % 2 != odd_parity) wiegand_correct = false;
 
-    if(brief) {
-        furi_string_printf(
-            result,
-            "FC: %u\r\nCard: %u, Parity:%s%s",
-            fc,
-            card,
-            (checksum_correct ? "+" : "-"),
-            (wiegand_correct ? "+" : "-"));
-    } else {
-        furi_string_printf(
-            result,
-            "FC: %u\r\n"
-            "Card: %u\r\n"
-            "Checksum: %s\r\n"
-            "W26 Parity: %s",
-            fc,
-            card,
-            (checksum_correct ? "+" : "-"),
-            (wiegand_correct ? "+" : "-"));
+    furi_string_set(result, "ID: ");
+
+    for(size_t i = 0; i < INDALA26_DECODED_DATA_SIZE; ++i) {
+        furi_string_cat_printf(result, "%02X ", protocol->data[i]);
+    }
+
+    furi_string_cat_printf(
+        result,
+        "\nFC: %u"
+        "\nCard: %u"
+        "\nParity: %s",
+        fc,
+        card,
+        (wiegand_correct ? "+" : "-"));
+
+    if(!brief) {
+        furi_string_cat_printf(result, "\nChecksum: %s", (checksum_correct ? "+" : "-"));
     }
 }
+
 void protocol_indala26_render_data(ProtocolIndala* protocol, FuriString* result) {
     protocol_indala26_render_data_internal(protocol, result, false);
 }
+
 void protocol_indala26_render_brief_data(ProtocolIndala* protocol, FuriString* result) {
     protocol_indala26_render_data_internal(protocol, result, true);
 }
